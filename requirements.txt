@@ -1,0 +1,4 @@
+click
+ocrd >= 2.46.0
+
+transformers

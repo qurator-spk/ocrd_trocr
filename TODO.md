@@ -1,0 +1,6 @@
+- [ ] LICENSE: Can I replace my name with "the contributors" or similar?
+- [ ] Move TODO.md items to GitHub issues, when the time comes
+- [ ] Create README-DEV.md
+- [ ] Create and review Makefile
+- [ ] ocrd-tool.json version field
+- [ ] review textequiv_level

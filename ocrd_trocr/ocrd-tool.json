@@ -1,0 +1,28 @@
+{
+  "git_url": "https://github.com/qurator-spk/ocrd_trocr",
+  "tools": {
+    "ocrd-trocr-recognize": {
+      "executable": "ocrd-trocr-recognize",
+      "categories": [
+        "Text recognition and optimization"
+      ],
+      "steps": [
+        "recognition/text-recognition"
+      ],
+      "description": "Recognize lines with TrOCR",
+      "input_file_grp": [
+        "OCR-D-SEG-LINE"
+      ],
+      "output_file_grp": [
+        "OCR-D-OCR-TROCR"
+      ],
+      "parameters": {
+        "model": {
+          "description": "The TrOCR model to use",
+          "type": "string",
+          "default": "microsoft/trocr-small-printed"
+        }
+      }
+    }
+  }
+}
