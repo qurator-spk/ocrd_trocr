@@ -23,7 +23,7 @@ from ocrd_utils import (
         MIMETYPE_PAGE
 )
 
-from ocrd_trocr.config import OCRD_TOOL, TF_CPP_MIN_LOG_LEVEL
+from ocrd_trocr.config import OCRD_TOOL
 
 TOOL = 'ocrd-trocr-recognize'
 
