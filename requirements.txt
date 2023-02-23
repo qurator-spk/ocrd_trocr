@@ -1,4 +1,5 @@
 click
 ocrd >= 2.46.0
 
+torch
 transformers
