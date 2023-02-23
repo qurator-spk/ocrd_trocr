@@ -47,6 +47,9 @@ class TrOcrRecognize(Processor):
         self.model = VisionEncoderDecoderModel.from_pretrained(self.parameter['model'])
         self.processor = TrOCRProcessor.from_pretrained(self.parameter['model'])
 
+        #TODO
+        self.features = ''
+
     def process(self):
         """
         Perform text recognition with TrOCR on the workspace.
@@ -71,8 +74,9 @@ class TrOcrRecognize(Processor):
 
                 textlines = region.get_TextLine()
                 log.info("About to recognize %i lines of region '%s'", len(textlines), region.id)
-                line_images_np = []
                 line_coordss = []
+
+                # TODO Can I feed more than one line?
                 for line in textlines:
                     log.debug("Recognizing line '%s' in region '%s'", line.id, region.id)
 
@@ -86,26 +90,19 @@ class TrOcrRecognize(Processor):
                         # always inadequate:
                         log.warning("Using raw image for line '%s' in region '%s'", line.id, region.id)
 
+                    # XXX 🦨
+                    line_image = line_image.convert(mode="RGB")
+
                     if (not all(line_image.size) or
                         line_image.height <= 8 or line_image.width <= 8 or
                         'binarized' in line_coords['features'] and line_image.convert('1').getextrema()[0] == 255):
                         # empty size or too tiny or no foreground at all: skip
                         log.warning("Skipping empty line '%s' in region '%s'", line.id, region.id)
-                        line_image_np = np.array([[0]], dtype=np.uint8)
+                        line_text = None
                     else:
-                        line_image_np = np.array(line_image, dtype=np.uint8)
-                    line_images_np.append(line_image_np)
-                    line_coordss.append(line_coords)
-                #raw_results_all = self.predictor.predict_raw(line_images_np, progress_bar=False)
-
-                for line, line_coords, raw_results in zip(textlines, line_coordss, raw_results_all):
-
-                    for i, p in enumerate(raw_results):
-                        p.prediction.id = "fold_{}".format(i)
-
-                    prediction = self.voter.vote_prediction_result(raw_results)
-                    prediction.id = "voted"
-
+                        pixel_values = self.processor(line_image, return_tensors="pt").pixel_values
+                        generated_ids = self.model.generate(pixel_values)
+                        line_text = self.processor.batch_decode(generated_ids, skip_special_tokens=True)[0]
 
                     # Delete existing results
                     if line.get_TextEquiv():
@@ -116,9 +113,9 @@ class TrOcrRecognize(Processor):
                     line.set_Word([])
 
                     # Save line results
-                    line_conf = prediction.avg_char_probability
-                    line.set_TextEquiv([TextEquivType(Unicode=line_text, conf=line_conf)])
-
+                    # TODO Set conf
+                    if line_text is not None:
+                        line.set_TextEquiv([TextEquivType(Unicode=line_text)])
 
             _page_update_higher_textequiv_levels('line', pcgts)
 
