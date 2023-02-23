@@ -1,5 +1,6 @@
 {
   "git_url": "https://github.com/qurator-spk/ocrd_trocr",
+  "version": "0.0.0",
   "tools": {
     "ocrd-trocr-recognize": {
       "executable": "ocrd-trocr-recognize",
