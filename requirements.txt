@@ -1,5 +1,7 @@
 click
 ocrd >= 2.46.0
 
-torch
 transformers
+torch
+sentencepiece
+protobuf == 3.20.*
