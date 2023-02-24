@@ -1,0 +1,32 @@
+version: 2.1
+orbs:
+  codecov: codecov/codecov@1.0.5
+
+jobs:
+  test:
+    parameters:
+      python-image:
+        type: string
+    docker:
+      - image: << parameters.python-image >>
+    environment:
+      - LC_ALL=C.UTF-8
+      - PYTHONIOENCODING: utf-8
+    steps:
+      - checkout
+      - run: pip3 install --upgrade pip
+      - run: make install deps-test-ubuntu PIP_INSTALL="pip3 install"
+      - run: make coverage
+      - codecov/upload
+
+workflows:
+  build:
+    jobs:
+      - test:
+          filters:
+            branches:
+              ignore:
+                - screenshots
+          matrix:
+            parameters:
+              python-image: ["python:3.7", "python:3.8", "python:3.9", "python:3.10", "python:3.11"]
