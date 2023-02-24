@@ -17,7 +17,7 @@ jobs:
       - run: pip3 install --upgrade pip
       - run: make install deps-test-ubuntu PIP_INSTALL="pip3 install"
       - run: make coverage
-      - codecov/upload
+      #- codecov/upload
       - store_test_results:
           path: test-results
 
