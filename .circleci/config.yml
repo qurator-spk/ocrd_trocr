@@ -16,7 +16,8 @@ jobs:
       - checkout
       - run: pip3 install --upgrade pip
       - run: make install deps-test-ubuntu PIP_INSTALL="pip3 install"
-      - run: make coverage
+      - run:
+          command: make coverage
           no_output_timeout: 30m
           # TODO should consider improving performance
       #- codecov/upload
