@@ -15,7 +15,7 @@ jobs:
     steps:
       - checkout
       - run: pip3 install --upgrade pip
-      - run: sudo apt update && sudo apt install cmake  # required to compile sentencepiece on Py3.11
+      - run: apt-get update && apt-get install cmake  # required to compile sentencepiece on Py3.11
       - run: make install deps-test-ubuntu PIP_INSTALL="pip3 install"
       - run:
           command: make coverage
