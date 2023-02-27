@@ -83,7 +83,7 @@ def workspace():
 
     yield workspace
 
-    #shutil.rmtree(WORKSPACE_DIR)
+    shutil.rmtree(WORKSPACE_DIR)
 
 
 def test_recognize(workspace):
